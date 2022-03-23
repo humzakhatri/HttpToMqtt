@@ -31,7 +31,12 @@ mqttClient.on('packetsend', function(packet){
 http.createServer(function(req, res){
     console.log(req.url);
     console.log(req.headers['payload']);
+
+    res.writeHead(200, {'Content-Type': 'text/plain'});
+    var message = 'It works!\n',
+        version = 'NodeJS ' + process.versions.node + '\n',
+        response = [message, version].join('\n');
+    res.end(response);
+
     mqttClient.publish(req.url, req.headers['payload']);
-    res.write('the api is created.');
-    res.end();
 }).listen();
